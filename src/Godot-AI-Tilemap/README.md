@@ -24,9 +24,17 @@ After a rebuild, the extension's `[AiToolType]` tool families are auto-discovere
 
 ## Tools
 
+All tools wrap Godot's built-in `TileMapLayer` node (Godot 4.3+, the modern replacement for the
+deprecated `TileMap`). Every tool is editor-only and addresses a layer by its node path relative to the
+edited scene root.
+
 | Tool | Description |
 | --- | --- |
-| `tilemap-echo` | Pure-managed readiness probe — echoes a message. |
-| `tilemap-editor-info` | Editor-only — returns the running Godot editor version + UI scale. |
+| `tilemap-create` | Create a `TileMapLayer` node (optional name / parent). |
+| `tilemap-set-tileset` | Assign a `TileSet` resource to a layer (by `res://` path). |
+| `tilemap-set-cell` | Set a single cell (coords + TileSet source id + atlas coords). |
+| `tilemap-erase-cell` | Erase a single cell. |
+| `tilemap-get-used-cells` | List a layer's used cells (read-only). |
+| `tilemap-clear` | Clear all cells on a layer. |
 
 License: Apache-2.0.
