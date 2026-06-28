@@ -1,0 +1,27 @@
+src/Godot-AI-Tilemap/Runtime/Tilemap/TileMapLayerInfo.cs
+  s_e3cea916442b5e::t_18605010903ef8 1-38
+src/Godot-AI-Tilemap/Runtime/Tilemap/TileCell.cs
+  s_e3cea916442b5e::t_33e4972e27a197 1-60
+src/Godot-AI-Tilemap/Runtime/Tilemap/TilemapValidation.cs
+  s_e3cea916442b5e::t_c979ed356c1334 1-69
+src/Godot-AI-Tilemap/Runtime/Tools/Tool_Tilemap.cs
+  s_e3cea916442b5e::t_148c78f3e41316 15-19,22,25-27,30-33
+src/Godot-AI-Tilemap/Runtime/Tools/Tool_Tilemap.Ids.cs
+  s_e3cea916442b5e::t_4de858853f7c16 1-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "aa933ac446b28a85cc566197a0e951b6db78872c",
+  "prompts": {},
+  "sessions": {
+    "s_e3cea916442b5e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c575ab56-73e6-4952-bb8b-fef415924e27",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Ivan Murzak <Ivan.D.Murzak@gmail.com>"
+    }
+  }
+}
