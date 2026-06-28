@@ -1,50 +1,70 @@
-# CLAUDE.md — Godot-AI-Tools-Template
+# CLAUDE.md — Godot-AI-Tilemap
 
-This is the **template repo** for authoring Godot-MCP extension packages (the Godot analog of
-`Unity-AI-Tools-Template`). It ships placeholder boilerplate that `commands/init.ps1` / `init.py`
-customize into a real extension. Changes here propagate to every future extension created from it — keep
-placeholder tokens consistent.
+A **Godot-MCP extension**: an MCP tool family for Godot's built-in `TileMapLayer` node (Godot 4.3+, the
+modern replacement for the deprecated `TileMap`), shipped as a **source-only NuGet package**
+(`com.IvanMurzak.Godot.MCP.Tilemap`) that compiles inside a consumer's Godot project against the
+consumer's own GodotSharp. Created from
+[`Godot-AI-Tools-Template`](https://github.com/IvanMurzak/Godot-AI-Tools-Template). The packaging recipe
+is the load-bearing detail — read `docs/source-only-nuget-recipe.md`.
 
-## Placeholders (replaced by `init`)
+## Layout
 
-| Token | Example value | Used in |
+- `src/Godot-AI-Tilemap/` — the source-only package (`Godot.NET.Sdk`).
+  - `Runtime/Tools/Tool_Tilemap.cs` — the `[AiToolType]` family (one partial class).
+  - `Runtime/Tools/Tool_Tilemap.Ids.cs` — all tool-id consts (pure-managed; pinned by tests).
+  - `Runtime/Tilemap/` — pure-managed support types: cell-coordinate / atlas-coordinate parsing and
+    validation cores (all unit-tested, no Godot native API).
+  - `Editor/Tools/Tool_Tilemap.{Editor,Create,SetTileset,SetCell,EraseCell,GetUsedCells,Clear}.cs` —
+    editor tools behind `#if TOOLS` (touch `EditorInterface` / live `TileMapLayer` + `TileSet`;
+    main-thread-marshalled; E2E-verified).
+  - `build/com.IvanMurzak.Godot.MCP.Tilemap.props` — the source-injection props (auto-imported by NuGet
+    in the consumer; MUST stay named `<PackageId>.props`).
+- `tests/Godot-AI-Tilemap.Tests/` — xUnit specs for the pure-managed sources only (no Godot binary).
+- `testbed/Tilemap-Testbed.csproj` — a consumer `Godot.NET.Sdk` project that restores the local-packed
+  package; `dotnet build` of it is the source-injection proof.
+
+## Tools
+
+| Tool | Kind | File |
 | --- | --- | --- |
-| `YOUR_FEATURE` | `Particles` | namespaces, `Tool_<Feature>`, folder/file names, the package id suffix |
-| `YOUR_TOOL_PREFIX` | `particles` | tool ids (`<prefix>-echo`, …) |
-| `YOUR_DISPLAY_NAME` | `Particles Tools` | package `Title`, docs |
-| `YOUR_DESCRIPTION` | `AI MCP tools for Godot Particles.` | package `Description` |
-| `YOUR_GITHUB_USERNAME_REPOSITORY` | `IvanMurzak/Godot-AI-Particles` | repo URLs |
-
-The package id is always `com.IvanMurzak.Godot.MCP.<Feature>` and is written literally as
-`com.IvanMurzak.Godot.MCP.YOUR_FEATURE`. `init` also renames `build/<id>.props` and activates CI
-(`*.yml-sample` → `*.yml`).
+| `tilemap-create` | editor | `Editor/Tools/Tool_Tilemap.Create.cs` |
+| `tilemap-set-tileset` | editor | `Editor/Tools/Tool_Tilemap.SetTileset.cs` |
+| `tilemap-set-cell` | editor | `Editor/Tools/Tool_Tilemap.SetCell.cs` |
+| `tilemap-erase-cell` | editor | `Editor/Tools/Tool_Tilemap.EraseCell.cs` |
+| `tilemap-get-used-cells` | editor | `Editor/Tools/Tool_Tilemap.GetUsedCells.cs` |
+| `tilemap-clear` | editor | `Editor/Tools/Tool_Tilemap.Clear.cs` |
 
 ## Build / test (no Godot binary)
 
 ```bash
-dotnet build src/Godot-AI-YOUR_FEATURE/Godot-AI-YOUR_FEATURE.csproj   # source-only package compiles tools
-dotnet test  tests/Godot-AI-YOUR_FEATURE.Tests/Godot-AI-YOUR_FEATURE.Tests.csproj
-dotnet pack  src/Godot-AI-YOUR_FEATURE/Godot-AI-YOUR_FEATURE.csproj -p:Version=0.0.0-ci -o local-nuget
-dotnet build testbed/YOUR_FEATURE-Testbed.csproj                      # consumes the local package (injection proof)
+dotnet build src/Godot-AI-Tilemap/Godot-AI-Tilemap.csproj   # source-only package compiles tools
+dotnet test  tests/Godot-AI-Tilemap.Tests/Godot-AI-Tilemap.Tests.csproj
+dotnet pack  src/Godot-AI-Tilemap/Godot-AI-Tilemap.csproj -p:Version=0.0.0-ci -o local-nuget
+dotnet build testbed/Tilemap-Testbed.csproj                 # consumes the local package (injection proof)
 ```
 
 `Godot.NET.Sdk` supplies GodotSharp from NuGet, so no Godot install is needed to build/test/pack or to
 prove the source-injection recipe (the testbed build is a faithful proxy for `godot --build-solutions`).
+The recipe is verified to compile into the consumer across the CI's multi-Godot matrix (4.3 / 4.4 / 4.5).
+When proving locally, note `dotnet pack` re-uses the **global NuGet cache** for an already-cached version:
+if you re-pack the same `Version`, clear `~/.nuget/packages/com.ivanmurzak.godot.mcp.tilemap/<ver>` (or
+pack a unique version) before re-restoring the testbed, or you'll silently build the stale cached source.
 
 ## Conventions
 
-- Root namespace `com.IvanMurzak.Godot.MCP.<Feature>` (mirrors the core addon).
-- Pure-managed tools → `Runtime/Tools/` (outside `#if TOOLS`, unit-testable); editor-driving tools →
-  `Editor/Tools/` (behind `#if TOOLS`, main-thread-marshalled, E2E-verified only).
-- One `[AiToolType] partial class Tool_<Feature>`; one `[AiTool]` method per partial-class file.
-- Core MCP pins (`com.IvanMurzak.McpPlugin`, `com.IvanMurzak.ReflectorNet`) must match the core Godot-MCP
-  addon; bump everywhere with `commands/update-core.ps1`. Never let GodotSharp become a package dep (see
-  `docs/source-only-nuget-recipe.md`; CI asserts it).
-- CI ships as `*.yml-sample` (inert on the template); `init` activates it. Never commit live
-  `.github/workflows/*.yml` here.
+- Root namespace `com.IvanMurzak.Godot.MCP.Tilemap`. Every `.cs` starts with the Apache-2.0 header.
+- Pure-managed cores (no Godot native API) + the tool-id consts → `Runtime/` (outside `#if TOOLS`,
+  unit-testable); editor-driving tools → `Editor/` (behind `#if TOOLS`, every Godot call via
+  `MainThread.Instance.Run(...)`, E2E-verified). Godot types that wrap a native object (`Node`,
+  `Resource`, `NodePath`, `SceneTree`) P/Invoke on construction, so they must never be touched from the
+  no-Godot xUnit host.
+- The package declares ONLY the `com.IvanMurzak.McpPlugin` / `com.IvanMurzak.ReflectorNet` min-version
+  deps; **GodotSharp must never become a package dependency** (CI asserts the nuspec). Keep the MCP pins in
+  lockstep with the core Godot-MCP addon; bump with `commands/update-core.ps1`.
+- One `[AiToolType] partial class Tool_Tilemap`; one `[AiTool]` method per partial-class file. New
+  pure-managed sources must be added to the test csproj `<Compile Include>` list to be unit-tested.
 
 ## Find detail in
 
 - `docs/source-only-nuget-recipe.md` — the packaging recipe (the centerpiece) + the consumer story.
-- `docs/ci.md` — workflows, the version gate, multi-Godot matrix, the `NUGET_API_KEY` secret.
-- `README.md` — the user-facing scaffold → init → write → build/test → publish → install walkthrough.
+- `docs/ci.md` — workflows, the version gate, multi-Godot matrix, the NuGet trusted-publishing setup.
