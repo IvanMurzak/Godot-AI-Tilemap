@@ -1,0 +1,29 @@
+tests/e2e/e2e-tools.json
+  s_e3cea916442b5e::t_8e8dd741a599b1 2-10,13-30,33-35
+src/Godot-AI-Tilemap/README.md
+  s_5fc53cb58fd422::t_f8aa9ca475125d 27-30,33-38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "93471df88bdc02976b2d7827da80e2caa446da30",
+  "prompts": {},
+  "sessions": {
+    "s_5fc53cb58fd422": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "agent-a19e8939ad9d8deab",
+        "model": "unknown"
+      },
+      "human_author": "Ivan Murzak <Ivan.D.Murzak@gmail.com>"
+    },
+    "s_e3cea916442b5e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c575ab56-73e6-4952-bb8b-fef415924e27",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Ivan Murzak <Ivan.D.Murzak@gmail.com>"
+    }
+  }
+}
