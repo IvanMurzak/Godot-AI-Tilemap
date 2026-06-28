@@ -36,7 +36,10 @@
   -->
   <ItemGroup>
     <Compile Include="..\..\src\Godot-AI-Tilemap\Runtime\Tools\Tool_Tilemap.cs" Link="Source\Tool_Tilemap.cs" />
-    <Compile Include="..\..\src\Godot-AI-Tilemap\Runtime\Tools\Tool_Tilemap.Echo.cs" Link="Source\Tool_Tilemap.Echo.cs" />
+    <Compile Include="..\..\src\Godot-AI-Tilemap\Runtime\Tools\Tool_Tilemap.Ids.cs" Link="Source\Tool_Tilemap.Ids.cs" />
+    <Compile Include="..\..\src\Godot-AI-Tilemap\Runtime\Tilemap\TileCell.cs" Link="Source\TileCell.cs" />
+    <Compile Include="..\..\src\Godot-AI-Tilemap\Runtime\Tilemap\TileMapLayerInfo.cs" Link="Source\TileMapLayerInfo.cs" />
+    <Compile Include="..\..\src\Godot-AI-Tilemap\Runtime\Tilemap\TilemapValidation.cs" Link="Source\TilemapValidation.cs" />
   </ItemGroup>
 
 </Project>
