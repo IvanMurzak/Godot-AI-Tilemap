@@ -30,10 +30,8 @@ the load-bearing detail — read `docs/source-only-nuget-recipe.md`.
 
 ## Tools
 
-Ids live in `Runtime/Tools/Tool_Tilemap.Ids.cs` (the source of truth). Each tool is one partial-class file
-named after it: pure-managed under `Runtime/Tools/`, editor tools under `Editor/Tools/`. Current tools:
-`tilemap-create`, `tilemap-set-tileset`, `tilemap-set-cell`, `tilemap-erase-cell`, `tilemap-get-used-cells`,
-`tilemap-clear`.
+Ids live in `Runtime/Tools/Tool_Tilemap.Ids.cs` (the source of truth). Current tools: `tilemap-create`,
+`tilemap-set-tileset`, `tilemap-set-cell`, `tilemap-erase-cell`, `tilemap-get-used-cells`, `tilemap-clear`.
 
 ## Build / test (no Godot binary)
 
